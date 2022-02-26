@@ -1,16 +1,28 @@
 import React from 'react';
-import {Text} from "react-native";
+import {Image, StyleSheet, View} from "react-native";
 import {RootStackParamList} from "../types/types";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SeparateImage'>;
 
-const SeparateImage = ({navigation, route}:  Props) => {
-    const {id} = route.params
+const SeparateImage = ({route}:  Props) => {
+    const {url} = route.params
 
     return (
-        <Text>{id}</Text>
+        <View style={styles.Container}>
+            <Image style={styles.Image} source={{uri: url}} resizeMode='contain'/>
+        </View>
     );
 };
+
+const styles = StyleSheet.create({
+    Container: {
+        display: 'flex',
+    },
+    Image: {
+        width: '100%',
+        height: '100%'
+    }
+})
 
 export default SeparateImage;

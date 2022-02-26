@@ -4,16 +4,16 @@ import {Image, StyleSheet, Text, View} from "react-native";
 type PropsType = {
     url: string
     avatarUrl: string
-    authorName: string
+    username: string
 }
 
-const ImageCard: React.FC<PropsType> = ({url, avatarUrl, authorName}) => {
+const ImageCard: React.FC<PropsType> = ({url, avatarUrl, username}) => {
     return (
         <View style={styles.Container}>
             <Image style={styles.Image} source={{uri: url}}/>
             <View style={styles.AuthorContainer}>
                 <Image style={styles.AuthorAvatar} source={{uri: avatarUrl}}/>
-                <Text style={styles.AuthorText}>{authorName}</Text>
+                <Text style={styles.AuthorText}>{username}</Text>
             </View>
         </View>
     );

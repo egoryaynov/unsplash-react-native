@@ -20,7 +20,7 @@ const App: React.FC = () => {
               <Stack.Screen
                   name="SeparateImage"
                   component={SeparateImageScreen}
-                  options={{ title: 'Страница отдельного изображения' }}
+                  options={({ route }) => ({ title: route.params.username })}
               />
           </Stack.Navigator>
       </NavigationContainer>
