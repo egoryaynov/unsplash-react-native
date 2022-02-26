@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, RefreshControl, SafeAreaView, ScrollView, Text, TouchableHighlight} from "react-native";
+import {ActivityIndicator, RefreshControl, ScrollView, Text, TouchableHighlight} from "react-native";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {GetPhotosResponse, RootStackParamList} from "../types/types";
 import ImageCard from "../components/ImageCard";
@@ -15,7 +15,7 @@ const Home = ({navigation}: Props) => {
     const [refreshing, setRefreshing] = React.useState(false);
     const [error, setError] = useState(null);
     const [page, setPage] = useState(1);
-    const [images, setImages] = useState<GetPhotosResponse>();
+    const [images, setImages] = useState<GetPhotosResponse>([]);
 
     useEffect(() => {
         setIsLoading(true)
@@ -35,7 +35,11 @@ const Home = ({navigation}: Props) => {
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true)
+        setPage(1)
     }, []);
+
+    if (isLoading || refreshing) return <ActivityIndicator style={{paddingTop: 20}} size="large" color="#000" />
+    if (error) return <Text>{error}</Text>
 
     return (
         <ScrollView refreshControl={
@@ -44,9 +48,7 @@ const Home = ({navigation}: Props) => {
                 onRefresh={onRefresh}
             />
         }>
-            {isLoading && !error
-                ? <ActivityIndicator style={{paddingTop: 20}} size="large" color="#000" />
-                : images?.map(imageItem => {
+            {images && images.map(imageItem => {
                     return <TouchableHighlight onPress={
                         () => navigation.navigate('SeparateImage', {url: imageItem.urls.full, username: '@' + imageItem.user.username})}
                     >
@@ -58,9 +60,8 @@ const Home = ({navigation}: Props) => {
                         />
                     </TouchableHighlight>
                 })}
-            {!isLoading && error && <Text>{error}</Text>}
 
-            {!isLoading && !error && <Pagination page={page} setPage={setPage}/>}
+            {<Pagination page={page} setPage={setPage}/>}
         </ScrollView>
     );
 };

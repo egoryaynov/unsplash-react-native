@@ -11,7 +11,16 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const App: React.FC = () => {
   return (
       <NavigationContainer>
-          <Stack.Navigator initialRouteName="Home">
+          <Stack.Navigator
+              initialRouteName="Home"
+              screenOptions={{
+                  animation: 'slide_from_right',
+                  headerTitleStyle: {
+                      fontSize: 24,
+                      fontWeight: '700'
+                  }
+              }}
+          >
               <Stack.Screen
                   name="Home"
                   component={HomeScreen}

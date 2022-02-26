@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     },
     Icon: {
         width: 20,
-        height: 20,
+        height: 30,
         resizeMode: 'contain'
     },
     Text: {
