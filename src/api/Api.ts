@@ -1,4 +1,4 @@
-import axios, {AxiosPromise} from "axios";
+import axios from "axios";
 
 import {UNSPLASH_TOKEN} from 'react-native-dotenv'
 import {GetPhotosResponse} from "../types/types";
