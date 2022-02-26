@@ -1,0 +1,5 @@
+const unsplashApi = {
+    getPhotos: () => {
+
+    }
+}
