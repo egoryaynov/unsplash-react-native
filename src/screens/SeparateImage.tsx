@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text} from "react-native";
-import {RootStackParamList} from "../types";
+import {RootStackParamList} from "../types/types";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SeparateImage'>;
