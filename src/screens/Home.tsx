@@ -13,24 +13,26 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 const Home = ({navigation}: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [refreshing, setRefreshing] = React.useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null);
     const [page, setPage] = useState(1);
     const [images, setImages] = useState<GetPhotosResponse>([]);
 
     useEffect(() => {
-        setIsLoading(true)
+        if (!isLoading) {
+            setIsLoading(true)
 
-        unsplashApi.getPhotos(page, PHOTOS_PER_PAGE)
-            .then(res => {
-                setImages(res.data)
-                setIsLoading(false)
-                setRefreshing(false)
-            })
-            .catch(error => {
-                setError(error.message)
-                setIsLoading(false)
-                setRefreshing(false)
-            })
+            unsplashApi.getPhotos(page, PHOTOS_PER_PAGE)
+                .then(res => {
+                    setImages(res.data)
+                })
+                .catch(error => {
+                    setError(error.message)
+                })
+                .finally(() => {
+                    setIsLoading(false)
+                    setRefreshing(false)
+                })
+        }
     }, [page, refreshing]);
 
     const onRefresh = React.useCallback(() => {
@@ -38,8 +40,7 @@ const Home = ({navigation}: Props) => {
         setPage(1)
     }, []);
 
-    if (isLoading || refreshing) return <ActivityIndicator style={{paddingTop: 20}} size="large" color="#000" />
-    if (error) return <Text>{error}</Text>
+    if (isLoading) return <ActivityIndicator style={{paddingTop: 20}} size="large" color="#000" />
 
     return (
         <ScrollView refreshControl={
@@ -48,7 +49,8 @@ const Home = ({navigation}: Props) => {
                 onRefresh={onRefresh}
             />
         }>
-            {images && images.map(imageItem => {
+            {error && <Text>{error}</Text>}
+            {!error && images && images.map(imageItem => {
                     return <TouchableHighlight onPress={
                         () => navigation.navigate('SeparateImage', {url: imageItem.urls.full, username: '@' + imageItem.user.username})}
                     >
@@ -61,7 +63,7 @@ const Home = ({navigation}: Props) => {
                     </TouchableHighlight>
                 })}
 
-            {<Pagination page={page} setPage={setPage}/>}
+            {!error && <Pagination page={page} setPage={setPage}/>}
         </ScrollView>
     );
 };
